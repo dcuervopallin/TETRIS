@@ -1,7 +1,7 @@
-package modelsDecision.decisionV2;
-import heuristic.heurisScoreBasic;
-import heuristic.heuristic;
-import modelsDecision.actionDecision;
+package SI_V0.modelsDecision.decisionV2;
+import SI_V0.heuristic.heurisScoreBasic;
+import SI_V0.heuristic.heuristic;
+import SI_V0.modelsDecision.actionDecision;
 import utils.treeStaff.nodeGame;
 import utils.treeStaff.stateGame;
 import utils.treeStaff.transitionGame;

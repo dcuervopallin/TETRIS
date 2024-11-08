@@ -1,6 +1,6 @@
-package modelsDecision.decisionV1;
-import modelsDecision.actionDecision;
-import heuristic.heuristic;
+package SI_V0.modelsDecision.decisionV1;
+import SI_V0.modelsDecision.actionDecision;
+import SI_V0.heuristic.heuristic;
 import utils.treeStaff.nodeGame;
 import utils.treeStaff.stateGame;
 import utils.treeStaff.transitionGame;

@@ -1,6 +1,6 @@
 package utils.treeStaff;
 
-import heuristic.heuristic;
+import SI_V0.heuristic.heuristic;
 import game.elements.matrixTetris;
 import game.elements.piece;
 

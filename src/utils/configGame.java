@@ -1,6 +1,6 @@
 package utils;
-import modelsDecision.actionDecision;
-import heuristic.heuristic;
+import SI_V0.modelsDecision.actionDecision;
+import SI_V0.heuristic.heuristic;
 import game.elements.piece;
 
 public class configGame {
@@ -51,7 +51,7 @@ public class configGame {
         private piece pieceUsed = null;
         private String pathTrainRNNA = null;
 
-        public configBuilder(modelsDecision.actionDecision actionDecision, heuristic heuristic) {
+        public configBuilder(SI_V0.modelsDecision.actionDecision actionDecision, heuristic heuristic) {
             this.actionDecision = actionDecision;
             this.heuristic = heuristic;
         }

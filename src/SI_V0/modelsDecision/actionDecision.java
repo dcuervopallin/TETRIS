@@ -1,6 +1,6 @@
-package modelsDecision;
+package SI_V0.modelsDecision;
 
-import heuristic.heuristic;
+import SI_V0.heuristic.heuristic;
 import utils.treeStaff.stateGame;
 
 // Idea para dar soporte a varias implementaciones del SI

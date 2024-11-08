@@ -28,7 +28,7 @@ public class meanDesvNode {
 
     @Override
     public String toString() {
-        return "Using: heuristic, " + heuristicUsed + "; action Decision, " + decisionUsed + "\n\nmetrica\t\tmedia\t\tdesviación" +
+        return "Using: SI_V0.heuristic, " + heuristicUsed + "; action Decision, " + decisionUsed + "\n\nmetrica\t\tmedia\t\tdesviación" +
                 "\n-\t\t-\t\t-"+
                 "\nScore\t\t" + meanScore + "\t\t" + desviacionScore +
                 "\nTime ms\t\t" + meanTime + "\t\t" + desviacionTime +

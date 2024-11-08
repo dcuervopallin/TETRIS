@@ -1,4 +1,4 @@
-package heuristic;
+package SI_V0.heuristic;
 
 import game.elements.matrixTetris;
 

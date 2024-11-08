@@ -1,7 +1,7 @@
 package SI_V1.training;
 
-import heuristic.*;
-import modelsDecision.decisionV1.decision1;
+import SI_V0.heuristic.*;
+import SI_V0.modelsDecision.decisionV1.decision1;
 import utils.configGame;
 import utils.playerSI;
 

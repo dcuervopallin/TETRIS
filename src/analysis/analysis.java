@@ -1,9 +1,9 @@
 package analysis;
 
-import heuristic.*;
-import modelsDecision.actionDecision;
-import modelsDecision.decisionV1.decision1;
-import modelsDecision.decisionV2.decision2;
+import SI_V0.heuristic.*;
+import SI_V0.modelsDecision.actionDecision;
+import SI_V0.modelsDecision.decisionV1.decision1;
+import SI_V0.modelsDecision.decisionV2.decision2;
 import utils.configGame;
 import utils.playerSI;
 import game.elements.*;
@@ -20,23 +20,9 @@ public class analysis {
     private final int trainingEpochs, maxIterations, topToPrint;
     private final boolean toDocResults, printResults;
     private final String docPath;
-
-    private final piece[] totalPieces = {new piece1(),
-            new piece2(),
-            new piece3(),
-            new piece4(),
-            new piece5(),
-            new piece6(),
-            new piece7()};
-    private final heuristic[] totalHeuristics = {new heurisHorizontalScoreOverMatrix(),
-            new heurisScoreBasic(),
-            new heurisScoreByNeighbor(),
-            new heurisScoreOverMatrix(),
-            new heurisVerticalMaskOverMatrixWithLoss(),
-            new huerisVerticalMaskOverMatrix()
-            };
-    private final actionDecision[] totalDecisions = { new decision1(),
-            new decision2()};
+    private final piece[] totalPieces;
+    private final heuristic[] totalHeuristics;
+    private final actionDecision[] totalDecisions;
 
     private analysis(analysisBuilder builder){
         this.trainingEpochs = builder.trainingEpochs;
@@ -45,6 +31,9 @@ public class analysis {
         this.toDocResults = builder.toDocResults;
         this.printResults = builder.printResults;
         this.docPath = builder.docOutput;
+        this.totalHeuristics = builder.totalHeuristics;
+        this.totalDecisions = builder.totalDecisions;
+        this.totalPieces = builder.totalPieces;
     }
 
     public void analysisSystem(){
@@ -55,14 +44,14 @@ public class analysis {
         String resultsAnalysis = "\t\t\tSE MUESTRAN LOS ANÁLISIS SOBRE LOS RESULTADOS\n";
 
         for(piece piece : totalPieces){
-            //resultsTraining += "\n\t<---------> RESULTADADOS ANÁLISIS, unicamente usando la pieza con id: " + piece.getNumberPiece() + " <--------->\n";
+            resultsTraining += "\n\t<---------> RESULTADADOS ANÁLISIS, unicamente usando la pieza con id: " + piece.getNumberPiece() + " <--------->\n";
             for(actionDecision decision : totalDecisions){
                 for(heuristic heuristic : totalHeuristics){
                     long[] times = new long[trainingEpochs];
                     int[] scores = new int[trainingEpochs];
                     int[] iterations = new int[trainingEpochs];
-                    //resultsTraining += "\n-> Using: heuristic, " + heuristic.getName() + "; decision, " + decision.getName() + ".\n\n";
-                    //resultsTraining += "epoch\ttime\tscore\titeration\n-)\t-\t-\t-\n";
+                    resultsTraining += "\n-> Using: SI_V0.heuristic, " + heuristic.getName() + "; decision, " + decision.getName() + ".\n\n";
+                    resultsTraining += "epoch\ttime\tscore\titeration\n-)\t-\t-\t-\n";
                     for(int i = 0; i < trainingEpochs; i++){
                         configGame config = new configGame.configBuilder(decision, heuristic)
                                 .setPiece(piece)
@@ -79,14 +68,14 @@ public class analysis {
                         scores[i] = resultInt[0];
                         iterations[i] = resultInt[1];
 
-                        //resultsTraining += i + ")\t" + times[i] + "\t" + scores[i] + "\t" + resultInt[1] + "\n";
+                        resultsTraining += i + ")\t" + times[i] + "\t" + scores[i] + "\t" + resultInt[1] + "\n";
                     }
-                    //resultsTraining += analyzerOverResults.meanOverResults(trainingEpochs, heuristic.getName(), decision.getName(), scores, times, iterations);
+                    resultsTraining += analyzerOverResults.meanOverResults(trainingEpochs, heuristic.getName(), decision.getName(), scores, times, iterations);
                     analyzerOverTotalResults.calculateMeanAndStore(trainingEpochs, heuristic.getName(), decision.getName(), scores, times, iterations);
                 }
             }
         }
-        //resultsAnalysis +=  analyzerOverResults.finalResults(topToPrint, "\t<---------> RESULTADOS PARA EL CONJUNTO DE TODAS LAS PIEZAS <--------->\n");
+        resultsAnalysis +=  analyzerOverResults.finalResults(topToPrint, "\t<---------> RESULTADOS PARA EL CONJUNTO DE TODAS LAS PIEZAS <--------->\n");
         analyzerOverResults.resetResult();
 
         resultsTraining += "\n\t<---------> RESULATADOS ANÁLISIS, simulación real <--------->\n";
@@ -95,7 +84,7 @@ public class analysis {
                 long[] times = new long[trainingEpochs];
                 int[] scores = new int[trainingEpochs];
                 int[] iterations = new int[trainingEpochs];
-                resultsTraining += "\n* Using: heuristic, " + heuristic.getName() + "; decision, " + decision.getName() + ".\n\n";
+                resultsTraining += "\n* Using: SI_V0.heuristic, " + heuristic.getName() + "; decision, " + decision.getName() + ".\n\n";
                 resultsTraining += "epoch\ttime\tscore\titeration\n-)\t-\t-\t-\n";
                 for(int i = 0; i < trainingEpochs; i++){
                     configGame config = new configGame.configBuilder(decision, heuristic)
@@ -141,12 +130,43 @@ public class analysis {
         private boolean toDocResults = false;
         private boolean printResults = false;
         private String docOutput = getName();
+        private heuristic[] totalHeuristics = { new heurisHorizontalScoreOverMatrix(),
+                new heurisScoreBasic(),
+                new heurisScoreByNeighbor(),
+                new heurisScoreOverMatrix(),
+                new heurisVerticalMaskOverMatrixWithLoss(),
+                new huerisVerticalMaskOverMatrix()
+        };
+        private piece[] totalPieces= {new piece1(),
+                new piece2(),
+                new piece3(),
+                new piece4(),
+                new piece5(),
+                new piece6(),
+                new piece7()};
+        private actionDecision[] totalDecisions = { new decision1(),
+                new decision2()};
 
         private String getName(){
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(" yyyyMMdd_HHmm");
             LocalDateTime now = LocalDateTime.now();
             String formattedDateTime = now.format(formatter);
             return System.getProperty("user.home") +  File.separator + "TETRIS_PRUEBAS" + File.separator + "Analys" + formattedDateTime;
+        }
+
+        public analysisBuilder setPieces(piece[] data) {
+            this.totalPieces = data;
+            return this;
+        }
+
+        public analysisBuilder setActionDecision(actionDecision[] decision){
+            this.totalDecisions = decision;
+            return this;
+        }
+
+        public analysisBuilder setHeuristic(heuristic[] data){
+            this.totalHeuristics = data;
+            return this;
         }
 
         public analysisBuilder setTopToSee(int topToSee){
