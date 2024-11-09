@@ -20,7 +20,7 @@ public class synapse {
 
     @Override
     public String toString(){
-        return "(" + first.getID() + "," + second.getID() + "," + weight + ")";
+        return "(" + first.getID() + "," + second.getID() + "," + String.format("%.10f",weight) + ")";
     }
 
     public int getFirstId(){

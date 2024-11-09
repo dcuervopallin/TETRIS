@@ -41,6 +41,6 @@ public class neuron {
 
     @Override
     public String toString(){
-        return idNeron + "(" + type +"," +sesge+")";
+        return idNeron + "(" + type +"," +String.format("%.10f", sesge)+")";
     }
 }

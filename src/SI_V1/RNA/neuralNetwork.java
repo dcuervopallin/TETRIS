@@ -7,6 +7,7 @@ import SI_V1.RNA.elements.neuronType;
 import SI_V1.RNA.elements.synapse;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static utils.usefullFunctions.*;
@@ -20,7 +21,8 @@ public class neuralNetwork {
     public neuralNetwork(String path){
         int[] newArchitecture = null;
         functionActivationNeuron functionActivationNeuron = null;
-        neuron[][] neurons = new neuron[23][];
+        neuron[][] newNeurons = null;
+        synapse[][] newSynapses = null;
 
         try(BufferedReader br = new BufferedReader(new FileReader(path))){
             String line;
@@ -29,30 +31,57 @@ public class neuralNetwork {
                 functionActivationNeuron = getActivationFuncByString(line);
             }
             br.readLine();
+
             if((line = br.readLine()) != null){
                 newArchitecture = getArquitectureByString(line);
             }
             br.readLine();
 
-            int indexLayer = 0;
-            while ((line = br.readLine()) != " "){
+            newNeurons = new neuron[newArchitecture.length][];
+            newSynapses = new synapse[newArchitecture.length - 1][];
+            ArrayList<ArrayList<neuron>> neuron = new ArrayList<>();
+
+            for(int layerSize = 0; layerSize < newArchitecture.length; layerSize++){
+                line = br.readLine();
                 String[] tokens = line.split("\t");
-                int indexNeuron = 0;
+                ArrayList<neuron> neuronList = new ArrayList<>();
 
                 for(String token : tokens){
-                    neurons[indexLayer][indexNeuron++] = getNeuronByString(token);
+                    neuronList.add(getNeuronByString(token));
                 }
+                neuron.add(neuronList);
             }
-            System.out.println(br.readLine());
 
+            br.readLine();
+
+            for (int i = 0; i < neuron.size(); i++) {
+                ArrayList<neuron> layer = neuron.get(i);
+                newNeurons[i] = layer.toArray(new neuron[newArchitecture[i]]);
+            }
+
+            ArrayList<ArrayList<synapse>> synapseList = new ArrayList<>();
+            for(int layerSize = 0; layerSize < newArchitecture.length - 1; layerSize++){
+                line = br.readLine();
+                String[] tokens = line.split("\t");
+                ArrayList<synapse> synapse = new ArrayList<>();
+                for(String token : tokens){
+                    synapse.add(getSynapseByString(token, newNeurons[layerSize], newNeurons[layerSize + 1]));
+                }
+                synapseList.add(synapse);
+            }
+
+            for (int i = 0; i < newArchitecture.length - 1; i++) {
+                ArrayList<synapse> layer = synapseList.get(i);
+                newSynapses[i] = layer.toArray(new synapse[layer.size()]);
+            }
         }catch (IOException e){
             System.out.println(e);
         }
         this.funcAct = functionActivationNeuron;
         this.architecture = newArchitecture;
 
-        this.totalNeural = new neuron[architecture.length][];
-        this.synapsesNet = new synapse[architecture.length - 1][];
+        this.totalNeural = newNeurons;
+        this.synapsesNet = newSynapses;
     }
 
     public neuralNetwork(int[] architecture, functionActivationNeuron funcAct){
@@ -103,7 +132,7 @@ public class neuralNetwork {
         neuralNetString += "\n";
         for(int i = 0; i < synapsesNet.length;i++){
             for(int j = 0; j < synapsesNet[i].length;j++){
-                neuralNetString += synapsesNet[i][j] + ", ";
+                neuralNetString += synapsesNet[i][j] + "\t";
             }
             neuralNetString += "\n";
         }

@@ -42,33 +42,36 @@ public class usefullFunctions {
     }
 
     private static neuronType getNeuronTypeByString(String input) {
-        if(input.equals(neuronType.IN)){
+        if(input.equals(neuronType.IN.toString())){
             return neuronType.IN;
-        } else if(input.equals(neuronType.OUT)){
+        } else if(input.equals(neuronType.OUT.toString())){
             return neuronType.OUT;
-        } else if (input.equals(neuronType.HIDE)){
+        } else if (input.equals(neuronType.HIDE.toString())){
             return neuronType.HIDE;
         }
         return null;
     }
 
-    public static synapse getSynapseByString(String input) {
-        Pattern pattern = Pattern.compile("\\((\\d+),(\\d+),(\\d+\\.\\d+)\\)");
+    public static synapse getSynapseByString(String input, neuron[] neuronLayer1, neuron[] neuronLayer2) {
+        // Para evitar que los double se printeasen como exponencias de "E -4", se limito el formato, por eso el replace
+        input = input.replaceAll(",", ".");
+        Pattern pattern = Pattern.compile("\\((\\d+)\\.(\\d+)\\.(\\d+\\.\\d+)\\)");
         Matcher matcher = pattern.matcher(input);
         if (matcher.find()) {
             int firstInteger = Integer.parseInt(matcher.group(1));
             int secondInteger = Integer.parseInt(matcher.group(2));
             double doublePart = Double.parseDouble(matcher.group(3));
 
-            return null;
-            //return new synapse(firstInteger, secondInteger, doublePart);
+            return new synapse(neuronLayer1[firstInteger], neuronLayer2[secondInteger], doublePart);
         } else {
             throw new IllegalArgumentException("El formato del input no es válido.");
         }
     }
 
     public static neuron getNeuronByString(String input) {
-        Pattern pattern = Pattern.compile("(\\d+)\\((\\w+),(\\d+\\.\\d+)\\)");
+        // Para evitar que los double se printeasen como exponencias de "E -4", se limito el formato, por eso el replace
+        input = input.replace(",", ".");
+        Pattern pattern = Pattern.compile("(\\d+)\\((\\w+).(\\d+\\.\\d+)\\)");
         Matcher matcher = pattern.matcher(input);
 
         if (matcher.find()) {
